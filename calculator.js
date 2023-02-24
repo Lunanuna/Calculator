@@ -1,39 +1,149 @@
+const display = document.querySelector('.display');
+const buttons = document.querySelectorAll('.button');
 
-//create calculate functions 
 
-const add = function(...args){
-    let sum = 0
-    for (let arg of args){
-        sum += arg;
+buttons.forEach(button => {
+    button.addEventListener('click', (e) => {
+
+        const value = e.target.dataset.value;
+        console.log(value);
+
+         //to make calculated by -+/*
+         if (value === '-' || value === '+' || value === '×' || value === '÷'){
+            if (display.innerText.includes('÷')) {
+                const splitStuff = display.innerText.split('÷');
+                operate('÷', splitStuff[0], splitStuff[1]);
+            }    
+            if (display.innerText.includes('-')) {
+                const splitStuff = display.innerText.split('-');
+                operate('-', splitStuff[0], splitStuff[1]);
+            }
+
+             if (display.innerText.includes('+')) {
+                  const splitStuff = display.innerText.split('+');
+                  operate('+', splitStuff[0], splitStuff[1]);
+             }          
+            
+            if (display.innerText.includes('×')) {
+                const splitStuff = display.innerText.split('×');
+                operate('×', splitStuff[0], splitStuff[1]);
+            }  
+        }
+        
+        //to calculated by equals
+        if (value === '='){
+            if (display.innerText.includes('÷')) {
+                const splitStuff = display.innerText.split('÷');
+                operate('÷', splitStuff[0], splitStuff[1]);
+            }         
+        }
+        if (value === '='){
+            if (display.innerText.includes('-')) {
+                const splitStuff = display.innerText.split('-');
+                operate('-', splitStuff[0], splitStuff[1]);
+            }
+            
+        }
+        if (value === '='){
+            if (display.innerText.includes('+')) {
+                const splitStuff = display.innerText.split('+');
+                operate('+', splitStuff[0], splitStuff[1]);
+            }          
+        }
+        if (value === '='){
+            if (display.innerText.includes('×')) {
+                const splitStuff = display.innerText.split('×');
+                operate('×', splitStuff[0], splitStuff[1]);
+            }           
+        }
+
+        // not to show the equal and delete on display
+        if (value !== '=' && value !== 'delete'){
+            display.innerText += value;
+        }
+       //to delete a singly letter per click 
+        if (value === 'delete'){
+            if(display.innerText === "Error"){
+                display.innerText = '';
+            }
+            display.innerText = display.innerText.slice(0,-1);
+        }
+        //to reset display
+        if (value === 'clear'){
+            display.innerText = '';
+        }
+        if (display.innerText === 'NaN'){
+            display.innerText = 'Error';
+        }
+        //to prevent from making multiple .+-/
+        
+        if (display.includes('×')){
+            if (value === '×'){
+                return display.innerText;
+            }
+            
+        }
+        if (display.includes('+')){
+            if (value === '+'){
+                display.innerText += '';
+            }
+            
+        }
+        if (display.includes('-')){
+            if (value === '-'){
+                display.innerText += '';
+            }
+            
+        }
+        if (display.includes('.')){
+            if (value === '.'){
+                display.innerText += '';
+            }
+            
+        }
+        if (display.includes('÷')){
+            if (value === '÷'){
+                display.innerText += '';
+            }
+            
+        }
+              
+    })
+});
+
+
+const operate = (operator, value1, value2) => {
+    const num1 = Number(value1);
+    const num2 = Number(value2);
+    if (operator === '÷'){
+        display.innerText = num1 / num2 ;
+        if ((num1/num2)-Math.floor(num1/num2) !== 0){
+            display.innerText = (num1 / num2).toFixed(3) ;
+        }
     }
-    return sum;
-};
 
-const subtract = function (a,b){
-    return a-b;
-}
-
-const multiply = function (a,b){
-    return a*b;
-}
-
-const divide = function (a,b){
-    return a/b;
-}
-
-// create a new function called operate
-
-const operate = function (a,b, operator){
-    if (operator == 'add'){
-        return add(a,b);
-    }else if (operator == 'subtract'){
-        return subtract(a,b);
-    }else if (operator == 'multiply'){
-        return multiply(a,b);
-    }else if (operator == 'divide'){
-        return divide(a,b);
+    if (operator === '+'){
+        display.innerText = num1 + num2;
+     if ((num1+num2)-Math.floor(num1+num2) !== 0){
+            display.innerText = (num1 + num2).toFixed(3) ;
+        } 
     }
-     
+
+    if (operator === '-'){
+        display.innerText = num1 - num2;
+     if ((num1-num2)-Math.floor(num1-num2) !== 0){
+            display.innerText = (num1 - num2).toFixed(3) ;
+        } 
+    }
+
+    if (operator === '×'){
+        display.innerText = num1 * num2;
+     if ((num1*num2)-Math.floor(num1*num2) !== 0){
+            display.innerText = (num1 * num2).toFixed(3) ;
+        } 
+    }
+
 }
 
-console.log(operate(15,5,'divide'));
+
+
